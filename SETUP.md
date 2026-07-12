@@ -4,7 +4,7 @@
 GitHub shows this README on your profile page only if the repo name
 **exactly matches your username**.
 
-- Create a new repo named: `sanjus-robotic-studio`
+- Create a new repo named: `sanjiv-anand`
 - Make it **public**
 - Don't initialize with a README (you already have one)
 
@@ -12,7 +12,7 @@ GitHub shows this README on your profile page only if the repo name
 Push everything in this folder to that repo, keeping the structure:
 
 ```
-sanjus-robotic-studio/
+sanjiv-anand/
 ├── README.md
 ├── generate_readme.py
 ├── svg_render.py
