@@ -11,6 +11,7 @@ the resulting SVGs to assets/dark_mode.svg and assets/light_mode.svg.
 import base64
 import os
 from datetime import date
+from calendar import monthrange
 
 THEMES = {
     "dark": {
@@ -55,6 +56,20 @@ FONT = "SF Mono, Menlo, Consolas, 'Courier New', monospace"
 DOB = date(2006, 8, 12)
 
 today = date.today()
+years = today.year - DOB.year
+months = today.month - DOB.month
+days = today.day - DOB.day
+if days < 0:
+    months -= 1
+    prev_month = today.month - 1 or 12
+    prev_year = today.year if today.month > 1 else today.year - 1
+    days += monthrange(prev_year, prev_month)[1]
+
+if months < 0:
+    years -= 1
+    months += 12
+
+power_on_time = f"{years} years, {months} months, {days} days"
 AGE = today.year - DOB.year - (
     (today.month, today.day) < (DOB.month, DOB.day)
 )
@@ -202,19 +217,19 @@ def build_svg(theme_name, avatar_path, stats):
     y += 26
     svg_parts.append(_text_line(right_x, y, "Model Name:", "Sanjiv Anand", colors)); y += 20
     svg_parts.append(_text_line(right_x, y, "Model Identifier:", "Human,1", colors)); y += 20
-    svg_parts.append(_text_line(right_x, y, "Chip:", "Curiosity Engine M∞", colors)); y += 20
+    svg_parts.append(_text_line(right_x, y, "Chip:", "Curiosity Engine ∞", colors)); y += 20
     svg_parts.append(_text_line(right_x, y, "Memory:", "iOS \u00b7 Robotics \u00b7 AI/ML", colors)); y += 20
-    svg_parts.append(_text_line(right_x, y, "Serial Number:", "0x53414E4A4956", colors)); y += 20
-    svg_parts.append(_text_line(right_x, y, "System Version:", {SYSTEM_VERSION} , colors)); y += 32
+    svg_parts.append(_text_line(right_x, y, "Serial Number:", "SJV12AUG2006", colors)); y += 20
+    svg_parts.append(_text_line(right_x, y, "Power ON Time", power_on_time , colors)); y += 32
 
     svg_parts.append(_section_header(right_x, y, content_w, "Built-In", colors))
     y += 26
-    svg_parts.append(_text_line(right_x, y, "Languages:", "Swift, Python, Kotlin, JS, C++, React, Nextjs", colors)); y += 20
+    svg_parts.append(_text_line(right_x, y, "Languages:", "Swift, Python, JS, C++, React, Nextjs", colors)); y += 20
     svg_parts.append(_text_line(right_x, y, "AI Tools:", "Claude, GPT, LangChain", colors)); y += 20
     svg_parts.append(_text_line(right_x, y, "Hardware:", "Arduino, Raspberry Pi, ESP32", colors)); y += 20
-    svg_parts.append(_text_line(right_x, y, "Currently:", "git push --force (sometimes)", colors)); y += 32
+    svg_parts.append(_text_line(right_x, y, "Currently:", "git commit -m "one more feature"", colors)); y += 32
 
-    svg_parts.append(_section_header(right_x, y, content_w, "GitHub Stats (live)", colors))
+    svg_parts.append(_section_header(right_x, y, content_w, "Developer Diagnostics (live)", colors))
     y += 26
     em_dash = "\u2014"
     mid_dot = "\u00b7"
