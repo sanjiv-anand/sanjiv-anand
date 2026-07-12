@@ -51,7 +51,7 @@ THEMES = {
 FONT = "SF Mono, Menlo, Consolas, 'Courier New', monospace"
 
 WIDTH = 900
-HEIGHT = 440
+HEIGHT = 480
 SIDEBAR_W = 260
 
 
