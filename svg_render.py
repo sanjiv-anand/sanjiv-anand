@@ -10,6 +10,7 @@ the resulting SVGs to assets/dark_mode.svg and assets/light_mode.svg.
 
 import base64
 import os
+from datetime import date
 
 THEMES = {
     "dark": {
@@ -49,6 +50,19 @@ THEMES = {
 }
 
 FONT = "SF Mono, Menlo, Consolas, 'Courier New', monospace"
+
+# ---------- Dynamic System Version ----------
+DOB = date(2006, 8, 12)
+
+today = date.today()
+AGE = today.year - DOB.year - (
+    (today.month, today.day) < (DOB.month, DOB.day)
+)
+
+SYSTEM_VERSION = f"SanjivOS {AGE}.0"
+
+# Apple-style build number
+BUILD_NUMBER = DOB.strftime("%Y%m%d")
 
 WIDTH = 900
 HEIGHT = 480
@@ -174,12 +188,12 @@ def build_svg(theme_name, avatar_path, stats):
         f'<text x="{avatar_cx}" y="{chip_y + 19}" font-family="{FONT}" font-size="12" font-weight="700" '
         f'text-anchor="middle" fill="{colors["text_primary"]}">\u2318 SANJIV</text>'
         f'<text x="{avatar_cx}" y="{chip_y + 36}" font-family="{FONT}" font-size="11" '
-        f'text-anchor="middle" fill="{colors["text_secondary"]}">OS 5.0</text>'
+        f'text-anchor="middle" fill="{colors["text_secondary"]}">{SYSTEM_VERSION}</text>'
     )
 
     svg_parts.append(
         f'<text x="{avatar_cx}" y="{chip_y + 66}" font-family="{FONT}" font-size="10" '
-        f'text-anchor="middle" fill="{colors["text_label"]}">booted from Cupertino</text>'
+        f'text-anchor="middle" fill="{colors["text_label"]}">booted from ~/Chennai</text>'
     )
 
     # Right panel content
@@ -187,18 +201,18 @@ def build_svg(theme_name, avatar_path, stats):
     svg_parts.append(_section_header(right_x, y, content_w, "System Report", colors))
     y += 26
     svg_parts.append(_text_line(right_x, y, "Model Name:", "Sanjiv Anand", colors)); y += 20
-    svg_parts.append(_text_line(right_x, y, "Model Identifier:", "RoboticsEngineer,1", colors)); y += 20
-    svg_parts.append(_text_line(right_x, y, "Chip:", "AI-Native Full-Stack Dev", colors)); y += 20
+    svg_parts.append(_text_line(right_x, y, "Model Identifier:", "Human,1", colors)); y += 20
+    svg_parts.append(_text_line(right_x, y, "Chip:", "Curiosity Engine M∞", colors)); y += 20
     svg_parts.append(_text_line(right_x, y, "Memory:", "iOS \u00b7 Robotics \u00b7 AI/ML", colors)); y += 20
-    svg_parts.append(_text_line(right_x, y, "Serial Number:", "SRJV-2018-XXXXXXX", colors)); y += 20
-    svg_parts.append(_text_line(right_x, y, "System Version:", "SanjivOS 5.0", colors)); y += 32
+    svg_parts.append(_text_line(right_x, y, "Serial Number:", "0x53414E4A4956", colors)); y += 20
+    svg_parts.append(_text_line(right_x, y, "System Version:", {SYSTEM_VERSION} , colors)); y += 32
 
     svg_parts.append(_section_header(right_x, y, content_w, "Built-In", colors))
     y += 26
-    svg_parts.append(_text_line(right_x, y, "Languages:", "Swift, Python, Kotlin, JS, C++", colors)); y += 20
+    svg_parts.append(_text_line(right_x, y, "Languages:", "Swift, Python, Kotlin, JS, C++, React, Nextjs", colors)); y += 20
     svg_parts.append(_text_line(right_x, y, "AI Tools:", "Claude, GPT, LangChain", colors)); y += 20
     svg_parts.append(_text_line(right_x, y, "Hardware:", "Arduino, Raspberry Pi, ESP32", colors)); y += 20
-    svg_parts.append(_text_line(right_x, y, "Currently:", "Gesture-Controlled Robotic Arm", colors)); y += 32
+    svg_parts.append(_text_line(right_x, y, "Currently:", "git push --force (sometimes)", colors)); y += 32
 
     svg_parts.append(_section_header(right_x, y, content_w, "GitHub Stats (live)", colors))
     y += 26
@@ -219,6 +233,7 @@ def build_svg(theme_name, avatar_path, stats):
     svg_parts.append(_text_line(right_x, y, "Commits:", commits_val, colors)); y += 20
     loc_val = f'{loc} ( +{loc_add}, -{loc_del} )'
     svg_parts.append(_text_line(right_x, y, "Lines of Code:", loc_val, colors)); y += 20
+    svg_parts.append(_text_line(right_x, y, "Technical Debt:", "∞", colors)); y += 20
 
     svg_parts.append(f'</g>')  # end clip group
 
