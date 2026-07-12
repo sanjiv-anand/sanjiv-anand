@@ -227,7 +227,7 @@ def build_svg(theme_name, avatar_path, stats):
     svg_parts.append(_text_line(right_x, y, "Languages:", "Swift, Python, JS, C++, React, Nextjs", colors)); y += 20
     svg_parts.append(_text_line(right_x, y, "AI Tools:", "Claude, GPT, LangChain", colors)); y += 20
     svg_parts.append(_text_line(right_x, y, "Hardware:", "Arduino, Raspberry Pi, ESP32", colors)); y += 20
-    svg_parts.append(_text_line(right_x, y, "Currently:", "git commit -m "one more feature"", colors)); y += 32
+    svg_parts.append(_text_line(right_x, y, "Currently:", "git commit -m \"one more feature\"", colors)); y += 32
 
     svg_parts.append(_section_header(right_x, y, content_w, "Developer Diagnostics (live)", colors))
     y += 26
