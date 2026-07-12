@@ -28,7 +28,7 @@ jobs:
       - name: Generate stats and update SVGs
         env:
           GH_TOKEN: ${{ secrets.GH_PAT }}
-          GH_USERNAME: sanjus-robotic-studio
+          GH_USERNAME: sanjiv-anand
         run: python generate_readme.py
 
       - name: Commit and push if changed
