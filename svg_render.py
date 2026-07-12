@@ -202,11 +202,22 @@ def build_svg(theme_name, avatar_path, stats):
 
     svg_parts.append(_section_header(right_x, y, content_w, "GitHub Stats (live)", colors))
     y += 26
-    repos_val = f'{stats.get("repos", "\u2014")} {{Contributed: {stats.get("contributed", "\u2014")}}} \u00b7 Stars: {stats.get("stars", "\u2014")}'
+    em_dash = "\u2014"
+    mid_dot = "\u00b7"
+    repos = stats.get("repos", em_dash)
+    contributed = stats.get("contributed", em_dash)
+    stars = stats.get("stars", em_dash)
+    commits = stats.get("commits", em_dash)
+    followers = stats.get("followers", em_dash)
+    loc = stats.get("loc", em_dash)
+    loc_add = stats.get("loc_add", em_dash)
+    loc_del = stats.get("loc_del", em_dash)
+
+    repos_val = f'{repos} {{Contributed: {contributed}}} {mid_dot} Stars: {stars}'
     svg_parts.append(_text_line(right_x, y, "Repos:", repos_val, colors)); y += 20
-    commits_val = f'{stats.get("commits", "\u2014")} \u00b7 Followers: {stats.get("followers", "\u2014")}'
+    commits_val = f'{commits} {mid_dot} Followers: {followers}'
     svg_parts.append(_text_line(right_x, y, "Commits:", commits_val, colors)); y += 20
-    loc_val = f'{stats.get("loc", "\u2014")} ( +{stats.get("loc_add", "\u2014")}, -{stats.get("loc_del", "\u2014")} )'
+    loc_val = f'{loc} ( +{loc_add}, -{loc_del} )'
     svg_parts.append(_text_line(right_x, y, "Lines of Code:", loc_val, colors)); y += 20
 
     svg_parts.append(f'</g>')  # end clip group
