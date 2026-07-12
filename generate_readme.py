@@ -14,10 +14,11 @@ Both are supplied automatically by the included GitHub Actions workflow.
 """
 
 import os
-import re
 import sys
 import time
 import requests
+
+from svg_render import build_svg
 
 GITHUB_USERNAME = os.environ.get("GH_USERNAME", "sanjus-robotic-studio")
 GITHUB_TOKEN = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
@@ -178,7 +179,7 @@ def format_number(n):
     return f"{n:,}"
 
 
-def build_stats_block():
+def build_stats_dict():
     overview = get_user_overview()
     followers = overview["followers"]["totalCount"]
     public_repos = overview["repositories"]["totalCount"]
@@ -190,35 +191,29 @@ def build_stats_block():
     additions, deletions = get_lines_of_code()
     total_loc = additions + deletions
 
-    lines = [
-        f"  Repos:       {public_repos} {{Contributed: {contributed_to}}}  |  Stars: {format_number(total_stars)}",
-        f"  Commits:     {format_number(total_commits)}  |  Followers: {format_number(followers)}",
-        f"  Lines of Code:  {format_number(total_loc)} ( +{format_number(additions)}, -{format_number(deletions)} )",
-    ]
-    return "\n".join(lines)
+    return {
+        "repos": public_repos,
+        "contributed": contributed_to,
+        "stars": format_number(total_stars),
+        "commits": format_number(total_commits),
+        "followers": format_number(followers),
+        "loc": format_number(total_loc),
+        "loc_add": format_number(additions),
+        "loc_del": format_number(deletions),
+    }
 
 
-def update_readme(stats_block, readme_path="README.md"):
-    with open(readme_path, "r", encoding="utf-8") as f:
-        content = f.read()
-
-    pattern = re.compile(
-        r"(<!--START_SECTION:stats-->\n)(.*?)(\n<!--END_SECTION:stats-->)",
-        re.DOTALL,
-    )
-
-    if not pattern.search(content):
-        print("ERROR: Could not find stats markers in README.md")
-        sys.exit(1)
-
-    new_content = pattern.sub(lambda m: m.group(1) + stats_block + m.group(3), content)
-
-    with open(readme_path, "w", encoding="utf-8") as f:
-        f.write(new_content)
-
-    print("README.md updated successfully.")
+def write_svgs(stats, avatar_path="assets/avatar.png", assets_dir="assets"):
+    os.makedirs(assets_dir, exist_ok=True)
+    for theme in ("dark", "light"):
+        svg = build_svg(theme, avatar_path, stats)
+        out_path = os.path.join(assets_dir, f"{theme}_mode.svg")
+        with open(out_path, "w", encoding="utf-8") as f:
+            f.write(svg)
+        print(f"Wrote {out_path}")
 
 
 if __name__ == "__main__":
-    stats_block = build_stats_block()
-    update_readme(stats_block)
+    stats = build_stats_dict()
+    write_svgs(stats)
+    print("Done:", stats)

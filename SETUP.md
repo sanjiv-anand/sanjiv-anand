@@ -15,17 +15,22 @@ Push everything in this folder to that repo, keeping the structure:
 sanjus-robotic-studio/
 ├── README.md
 ├── generate_readme.py
+├── svg_render.py
 ├── requirements.txt
 ├── assets/
-│   └── avatar.png       <- add your pixel-art image here
+│   ├── avatar.png          <- your pixel-art image
+│   ├── dark_mode.svg        <- auto-generated, don't hand-edit
+│   └── light_mode.svg       <- auto-generated, don't hand-edit
 └── .github/
     └── workflows/
         └── update-readme.yml
 ```
 
-## 3. Add your avatar
-Drop your pixel-art image into `assets/avatar.png` (any size, ~220px wide
-looks best). The README already points to this path.
+## 3. Avatar
+Your pixel-art avatar is already baked into `assets/dark_mode.svg` and
+`assets/light_mode.svg`. If you ever want to swap it for a new image,
+replace `assets/avatar.png` and re-run `python generate_readme.py`
+locally (or just trigger the Action) to rebake both SVGs.
 
 ## 4. Create a Personal Access Token (PAT)
 The default `GITHUB_TOKEN` that Actions provides can't always read full
@@ -61,6 +66,11 @@ whenever you push to `main`.
   cache being warm for each repo. The first run may under-count for very
   recently created/updated repos — a second run a few minutes later
   usually fixes it.
-- You can freely edit any of the static text in `README.md` (bio, contact,
-  skills) — only the block between `<!--START_SECTION:stats-->` and
-  `<!--END_SECTION:stats-->` gets overwritten automatically.
+- README.md just displays `assets/dark_mode.svg` / `assets/light_mode.svg`
+  via a `<picture>` tag, so it automatically matches the viewer's system
+  theme. You don't need to touch README.md again unless you want to
+  change the caption text below the image.
+- Static bio/skills text (Model Name, Chip, Built-In, etc.) lives inside
+  `svg_render.py` — edit the strings there if your info changes, then
+  either re-run the script locally or just push (the Action will bake a
+  fresh SVG with your live stats).
